@@ -167,6 +167,14 @@ document.addEventListener("DOMContentLoaded", function () {
       const email = formData.get("email");
       const subject = formData.get("subject");
       const message = formData.get("message");
+      const websiteTrap = formData.get("website"); // honeypot
+
+      // Honeypot triggered: silently succeed (pretend send) and abort
+      if (websiteTrap) {
+        updateStatus("Message sent successfully ✅", "success");
+        contactForm.reset();
+        return;
+      }
 
       if (!name || !email || !subject || !message) {
         showNotification("Please fill in all fields.", "error");
