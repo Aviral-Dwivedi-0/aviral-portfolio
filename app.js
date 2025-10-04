@@ -186,21 +186,18 @@ document.addEventListener("DOMContentLoaded", function () {
       updateStatus("Sending your message...", "info");
 
       try {
-        const payload = {
+        // Use URLSearchParams to let Apps Script populate e.parameter reliably.
+        const encoded = new URLSearchParams({
           name,
           email,
           subject,
           message,
           timestamp: new Date().toISOString(),
-        };
+        });
 
-        const response = await fetch(APPS_SCRIPT_URL, {
+        await fetch(APPS_SCRIPT_URL, {
           method: "POST",
-          mode: "no-cors", // Apps Script web app can respond but we ignore body to avoid CORS issues
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
+          body: encoded,
         });
 
         showNotification(
